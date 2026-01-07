@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASPIRE 上线倒计时</title>
+    <style>
+        /* --- 1. 字体引入 --- */
+        @font-face {
+            font-family: 'CorporateFont'; 
+            /* 数字依然用企业字体 */
+            src: url('ROCHESANS-BOLD.TTF'); 
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            /* 中文环境字体栈：优先企业字体(显示数字)，中文用微软雅黑 */
+            font-family: 'CorporateFont', 'Microsoft YaHei', 'SimHei', sans-serif;
+            overflow: hidden;
+            background-color: transparent; /* 透明背景 */
+        }
+
+        .bg-image {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center; 
+            align-items: center;     
+            color: white;
+            text-align: center;
+        }
+
+        .countdown-container {
+            display: flex;           
+            flex-direction: row;     /* 强制横向排列 */
+            align-items: baseline;   /* 底部基线对齐 */
+            justify-content: center;
+            gap: 15px;               /* 保持和英文版一致的间距 */
+            
+            width: 100%;             
+            text-shadow: 0px 5px 15px rgba(0,0,0,0.6); 
+        }
+
+        h1 {
+            /* 保持您满意的那个字号比例 */
+            font-size: 2.5vw; 
+            margin: 0;
+            letter-spacing: 1px;
+            font-weight: normal; 
+            white-space: nowrap;     /* 不换行 */
+        }
+
+        #timer {
+            /* 保持您满意的那个字号比例 */
+            font-size: 3.5vw; 
+            line-height: 1; 
+            margin: 0;
+            letter-spacing: -1px; 
+            white-space: nowrap;     /* 不换行 */
+        }
+
+        /* --- 手机适配 --- */
+        @media (max-width: 600px) {
+            .countdown-container {
+                flex-direction: column; 
+                gap: 5px;
+            }
+            h1 { font-size: 20px; }
+            #timer { font-size: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-image">
+        <div class="countdown-container">
+            <h1>距离 ASPIRE 上线还有</h1> 
+            <div id="timer">加载中...</div>
+        </div>
+    </div>
+
+    <script>
+        // --- 目标日期：2026年4月10日 ---
+        var countDownDate = new Date("Apr 10, 2026 00:00:00").getTime();
+
+        var x = setInterval(function() {
+            var now = new Date().getTime();
+            var distance = countDownDate - now;
+
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000); 
+
+            var hoursStr = hours < 10 ? "0" + hours : hours;
+            var minutesStr = minutes < 10 ? "0" + minutes : minutes;
+            var secondsStr = seconds < 10 ? "0" + seconds : seconds;
+
+            // --- 中文显示格式 ---
+            document.getElementById("timer").innerHTML = 
+                days + "天 " + hoursStr + "时 " + minutesStr + "分 " + secondsStr + "秒"; 
+
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("timer").innerHTML = "已上线";
+            }
+        }, 1000);
+    </script>
+
+</body>
+</html>
