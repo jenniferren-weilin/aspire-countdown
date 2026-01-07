@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ASPIRE GO-LIVE</title>
     <style>
-        /* --- 1. 核心：引入您的企业字体 --- */
+        /* --- 1. 字体部分保持不变 --- */
         @font-face {
             font-family: 'CorporateFont'; 
-            /* 确保文件名与 GitHub 上传的一致 */
             src: url('ROCHESANS-BOLD.TTF'); 
         }
 
@@ -17,18 +16,16 @@
             margin: 0;
             font-family: 'CorporateFont', 'Arial', sans-serif;
             overflow: hidden;
-            background-color: #000; 
+            
+            /* 【关键修改】背景设为完全透明 */
+            background-color: transparent;
         }
 
         .bg-image {
-            background-image: url('background.gif');
-            height: 100%;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-color: rgba(0, 0, 0, 0.3); 
-            background-blend-mode: overlay;
+            /* 【关键修改】删除了背景图和黑色遮罩，只保留布局功能 */
             
+            height: 100%;
+            /* 保持居中布局 */
             display: flex;
             flex-direction: column; 
             justify-content: center; 
@@ -39,9 +36,13 @@
 
         .countdown-container {
             padding: 0; 
+            /* 保留文字阴影，这很重要！
+               因为背景是透明的，如果 gSite 的背景比较亮，
+               这个阴影能确保白字依然清晰可见 */
             text-shadow: 0px 5px 15px rgba(0,0,0,0.6); 
         }
 
+        /* --- 以下字体大小和间距保持原样 --- */
         h1 {
             font-size: 3vw; 
             margin: 0 0 15px 0; 
@@ -51,18 +52,14 @@
         }
 
         #timer {
-            /* 因为加了秒数，字数变长了，稍微调小一点点字号防止换行 */
             font-size: 6.5vw; 
             line-height: 1; 
             margin-top: 0;
-            /* 确保数字之间不会太挤 */
             letter-spacing: -1px; 
         }
 
-        /* 手机端适配 */
         @media (max-width: 768px) {
             h1 { font-size: 20px; }
-            /* 手机竖屏时，秒数会让这一行很长，调小字号 */
             #timer { font-size: 40px; }
         }
     </style>
@@ -84,18 +81,15 @@
             var now = new Date().getTime();
             var distance = countDownDate - now;
 
-            // 时间计算
             var days = Math.floor(distance / (1000 * 60 * 60 * 24));
             var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000); // 拿回秒数
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000); 
 
-            // 补零逻辑 (例如 5秒 -> 05)
             var hoursStr = hours < 10 ? "0" + hours : hours;
             var minutesStr = minutes < 10 ? "0" + minutes : minutes;
             var secondsStr = seconds < 10 ? "0" + seconds : seconds;
 
-            // 显示格式：90D 08H 15M 05S
             document.getElementById("timer").innerHTML = 
                 days + "D " + hoursStr + "H " + minutesStr + "M " + secondsStr + "S"; 
 
