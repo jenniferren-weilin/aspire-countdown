@@ -8,7 +8,7 @@
         /* --- 1. 核心：引入您的企业字体 --- */
         @font-face {
             font-family: 'CorporateFont'; 
-            /* 文件名必须和 GitHub 里上传的一模一样 */
+            /* 确保文件名与 GitHub 上传的一致 */
             src: url('ROCHESANS-BOLD.TTF'); 
         }
 
@@ -21,18 +21,14 @@
         }
 
         .bg-image {
-            /* --- 2. 引用背景动图 --- */
             background-image: url('background.gif');
-            
             height: 100%;
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
-            
             background-color: rgba(0, 0, 0, 0.3); 
             background-blend-mode: overlay;
-
-            /* --- 3. 绝对居中布局 --- */
+            
             display: flex;
             flex-direction: column; 
             justify-content: center; 
@@ -48,21 +44,26 @@
 
         h1 {
             font-size: 3vw; 
-            margin: 0 0 10px 0; 
+            margin: 0 0 15px 0; 
             letter-spacing: 2px;
             text-transform: uppercase; 
             font-weight: normal; 
         }
 
         #timer {
-            font-size: 8vw; 
+            /* 因为加了秒数，字数变长了，稍微调小一点点字号防止换行 */
+            font-size: 6.5vw; 
             line-height: 1; 
             margin-top: 0;
+            /* 确保数字之间不会太挤 */
+            letter-spacing: -1px; 
         }
 
+        /* 手机端适配 */
         @media (max-width: 768px) {
-            h1 { font-size: 24px; }
-            #timer { font-size: 60px; }
+            h1 { font-size: 20px; }
+            /* 手机竖屏时，秒数会让这一行很长，调小字号 */
+            #timer { font-size: 40px; }
         }
     </style>
 </head>
@@ -76,21 +77,27 @@
     </div>
 
     <script>
+        // --- 目标日期：2026年4月10日 ---
         var countDownDate = new Date("Apr 10, 2026 00:00:00").getTime();
 
         var x = setInterval(function() {
             var now = new Date().getTime();
             var distance = countDownDate - now;
 
+            // 时间计算
             var days = Math.floor(distance / (1000 * 60 * 60 * 24));
             var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000); // 拿回秒数
+
+            // 补零逻辑 (例如 5秒 -> 05)
             var hoursStr = hours < 10 ? "0" + hours : hours;
             var minutesStr = minutes < 10 ? "0" + minutes : minutes;
+            var secondsStr = seconds < 10 ? "0" + seconds : seconds;
 
+            // 显示格式：90D 08H 15M 05S
             document.getElementById("timer").innerHTML = 
-                days + "D " + hoursStr + "H " + minutesStr + "M"; 
+                days + "D " + hoursStr + "H " + minutesStr + "M " + secondsStr + "S"; 
 
             if (distance < 0) {
                 clearInterval(x);
