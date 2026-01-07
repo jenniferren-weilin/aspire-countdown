@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ASPIRE GO-LIVE</title>
     <style>
-        /* --- 1. 字体引入 --- */
         @font-face {
             font-family: 'CorporateFont'; 
             src: url('ROCHESANS-BOLD.TTF'); 
@@ -16,12 +15,12 @@
             margin: 0;
             font-family: 'CorporateFont', 'Arial', sans-serif;
             overflow: hidden;
-            background-color: transparent; /* 背景透明 */
+            background-color: transparent; /* 透明背景 */
         }
 
         .bg-image {
             height: 100%;
-            /* 居中大容器 */
+            width: 100%;
             display: flex;
             justify-content: center; 
             align-items: center;     
@@ -29,45 +28,44 @@
             text-align: center;
         }
 
-        /* --- 关键修改：布局容器 --- */
         .countdown-container {
-            display: flex;           /* 启用弹性布局 */
-            flex-direction: row;     /* 【重点】强制横向排列：变成一行 */
-            align-items: baseline;   /* 让标题和数字在底部基准线对齐（看起来更自然） */
+            display: flex;           
+            flex-direction: row;     /* 强制横向排列 */
+            align-items: baseline;   /* 底部对齐 */
             justify-content: center;
-            gap: 30px;               /* 标题和数字中间的间距 */
+            gap: 15px;               /* 标题和数字之间的间距，稍微拉近一点 */
             
-            padding: 0 5%;           /* 左右留点空隙，防止贴边 */
+            width: 100%;             /* 占满宽度 */
             text-shadow: 0px 5px 15px rgba(0,0,0,0.6); 
         }
 
         h1 {
-            font-size: 3vw; 
-            margin: 0;               /* 去掉边距，因为现在是左右排列了 */
-            letter-spacing: 2px;
+            /* 标题字号：调小，适应一行 */
+            font-size: 2.5vw; 
+            margin: 0;
+            letter-spacing: 1px;
             text-transform: uppercase; 
             font-weight: normal; 
-            white-space: nowrap;     /* 防止标题换行 */
+            white-space: nowrap;     /* 死都不换行 */
         }
 
         #timer {
-            font-size: 6.5vw; 
+            /* 数字字号：只比标题大一点点 (2.5vw vs 3.5vw) */
+            font-size: 3.5vw; 
             line-height: 1; 
-            margin: 0;               /* 去掉边距 */
+            margin: 0;
             letter-spacing: -1px; 
-            white-space: nowrap;     /* 防止数字换行 */
+            white-space: nowrap;     /* 死都不换行 */
         }
 
-        /* --- 手机端适配 --- */
-        /* 当屏幕宽度小于 1000px 时，自动变回两行，否则手机上字会太小 */
-        @media (max-width: 1000px) {
+        /* --- 只有在极窄的手机屏幕 (<600px) 下才变成两行 --- */
+        @media (max-width: 600px) {
             .countdown-container {
-                flex-direction: column; /* 变回竖向排列 */
-                align-items: center;
-                gap: 10px;
+                flex-direction: column; 
+                gap: 5px;
             }
-            h1 { font-size: 24px; margin-bottom: 5px; }
-            #timer { font-size: 40px; }
+            h1 { font-size: 20px; }
+            #timer { font-size: 30px; }
         }
     </style>
 </head>
@@ -81,7 +79,6 @@
     </div>
 
     <script>
-        // --- 目标日期：2026年4月10日 ---
         var countDownDate = new Date("Apr 10, 2026 00:00:00").getTime();
 
         var x = setInterval(function() {
