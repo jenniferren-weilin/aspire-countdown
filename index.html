@@ -1,72 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ASPIRE Countdown</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASPIRE GO-LIVE</title>
+    <style>
+        /* --- 1. 核心：引入您的企业字体 --- */
+        @font-face {
+            font-family: 'CorporateFont'; 
+            /* 【重要】文件名必须和 GitHub 里上传的一模一样，包括大小写 */
+            src: url('ROCHESANS-BOLD.TTF'); 
+        }
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+        body, html {
+            height: 100%;
+            margin: 0;
+            /* 全局应用该字体 */
+            font-family: 'CorporateFont', 'Arial', sans-serif;
+            overflow: hidden;
+            background-color: #000; /* 图片加载前的背景色 */
+        }
 
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Montserrat', sans-serif;
-      background: url("background.gif") center center / cover no-repeat;
-    }
+        .bg-image {
+            /* --- 2. 引用背景动图 --- */
+            background-image: url('background.gif');
+            
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            
+            /* 黑色遮罩，0.3 表示 30% 透明度 */
+            background-color: rgba(0, 0, 0, 0.3); 
+            background-blend-mode: overlay;
 
-    .container {
-      height: 120px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0, 0, 0, 0.45);
-    }
+            /* --- 3. 绝对居中布局 --- */
+            display: flex;
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center;     
+            color: white;
+            text-align: center;
+        }
 
-    .title {
-      color: #ffffff;
-      margin-right: 20px;
-      font-size: 16px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
+        .countdown-container {
+            padding: 0; 
+            text-shadow: 0px 5px 15px rgba(0,0,0,0.6); 
+        }
 
-    .time {
-      color: #ffffff;
-      font-size: 28px;
-      font-weight: 700;
-    }
-  </style>
-</head>
-<body>
+        h1 {
+            /* 标题字号 */
+            font-size: 3vw; 
+            margin: 0 0 10px 0; 
+            letter-spacing: 2px;
+            text-transform: uppercase; 
+            font-weight: normal; 
+        }
 
-  <div class="container">
-    <div class="title">ASPIRE Go-Live In</div>
-    <div class="time" id="countdown"></div>
-  </div>
-
-  <script>
-    // Target time: April 9, 2026, 09:00
-    const targetDate = new Date("2026-04-09T09:00:00").getTime();
-
-    setInterval(() => {
-      const now = new Date().getTime();
-      const diff = targetDate - now;
-
-      if (diff <= 0) {
-        document.getElementById("countdown").innerHTML = "LIVE";
-        return;
-      }
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / (1000 * 60)) % 60);
-
-      document.getElementById("countdown").innerHTML =
-        `${days}D ${hours}H ${minutes}M`;
-    }, 1000);
-  </script>
-
-</body>
-</html>
-
+        #timer {
+            /* 数字字号 - 非常巨大 */
+            font-size: 8vw; 
+            line-height: 1;
