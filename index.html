@@ -8,17 +8,16 @@
         /* --- 1. 核心：引入您的企业字体 --- */
         @font-face {
             font-family: 'CorporateFont'; 
-            /* 【重要】文件名必须和 GitHub 里上传的一模一样，包括大小写 */
+            /* 文件名必须和 GitHub 里上传的一模一样 */
             src: url('ROCHESANS-BOLD.TTF'); 
         }
 
         body, html {
             height: 100%;
             margin: 0;
-            /* 全局应用该字体 */
             font-family: 'CorporateFont', 'Arial', sans-serif;
             overflow: hidden;
-            background-color: #000; /* 图片加载前的背景色 */
+            background-color: #000; 
         }
 
         .bg-image {
@@ -30,7 +29,6 @@
             background-repeat: no-repeat;
             background-size: cover;
             
-            /* 黑色遮罩，0.3 表示 30% 透明度 */
             background-color: rgba(0, 0, 0, 0.3); 
             background-blend-mode: overlay;
 
@@ -49,7 +47,6 @@
         }
 
         h1 {
-            /* 标题字号 */
             font-size: 3vw; 
             margin: 0 0 10px 0; 
             letter-spacing: 2px;
@@ -58,6 +55,49 @@
         }
 
         #timer {
-            /* 数字字号 - 非常巨大 */
             font-size: 8vw; 
-            line-height: 1;
+            line-height: 1; 
+            margin-top: 0;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 24px; }
+            #timer { font-size: 60px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-image">
+        <div class="countdown-container">
+            <h1>ASPIRE GO-LIVE IN</h1> 
+            <div id="timer">LOADING...</div>
+        </div>
+    </div>
+
+    <script>
+        var countDownDate = new Date("Apr 10, 2026 00:00:00").getTime();
+
+        var x = setInterval(function() {
+            var now = new Date().getTime();
+            var distance = countDownDate - now;
+
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            
+            var hoursStr = hours < 10 ? "0" + hours : hours;
+            var minutesStr = minutes < 10 ? "0" + minutes : minutes;
+
+            document.getElementById("timer").innerHTML = 
+                days + "D " + hoursStr + "H " + minutesStr + "M"; 
+
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("timer").innerHTML = "LIVE NOW";
+            }
+        }, 1000);
+    </script>
+
+</body>
+</html>
