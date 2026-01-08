@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ASPIRE 上线倒计时</title>
     <style>
-        /* --- 1. 字体定义 --- */
+        /* 1. 字体定义 */
         @font-face {
             font-family: 'CorporateFont'; 
             src: url('ROCHESANS-BOLD.TTF'); 
@@ -15,9 +15,8 @@
             height: 100%;
             margin: 0;
             overflow: hidden;
-            background-color: transparent;
-            /* 默认字体设为微软雅黑，保证中文显示正常 */
-            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            background-color: transparent; /* 背景透明 */
+            font-family: 'Microsoft YaHei', sans-serif;
         }
 
         .bg-image {
@@ -26,73 +25,56 @@
             display: flex;
             justify-content: center; 
             align-items: center;     
-            color: white;
             text-align: center;
         }
 
+        /* 2. 布局容器 - 强制横向 */
         .countdown-container {
             display: flex;           
-            flex-direction: row;     /* 强制横向一行 */
-            align-items: baseline;   /* 底部对齐，让数字和汉字落在同一条线上 */
+            flex-direction: row !important; /* 【强制】必须横向，死都不换行 */
+            align-items: baseline;
             justify-content: center;
-            
-            /* 标题和倒计时之间的间距 */
             gap: 15px;               
-            
             width: 100%;
             text-shadow: 0px 4px 10px rgba(0,0,0,0.5); 
+            color: white;
         }
 
-        /* --- 左侧标题样式 --- */
+        /* 3. 左侧标题样式 */
         h1 {
-            /* 标题字号：稍微调小一点，突出右边的数字 */
-            font-size: 2.2vw; 
+            /* 使用 clamp 智能缩放：最小20px，最大40px */
+            font-size: clamp(20px, 2.5vw, 50px); 
             margin: 0;
-            font-weight: bold; /* 中文标题加粗 */
-            white-space: nowrap;
+            font-weight: bold; 
+            white-space: nowrap; /* 不许换行 */
             letter-spacing: 1px;
         }
 
-        /* --- 右侧倒计时区域样式 --- */
+        /* 4. 右侧倒计时样式 */
         #timer {
             margin: 0;
-            white-space: nowrap;
+            white-space: nowrap; /* 不许换行 */
             line-height: 1;
         }
 
-        /* --- 【关键修改】数字的样式 --- */
+        /* 数字样式 */
         .num {
-            font-family: 'CorporateFont', sans-serif; /* 只有数字用企业字体 */
-            font-size: 3.5vw; /* 数字大一点 */
+            font-family: 'CorporateFont', sans-serif; 
+            /* 数字比文字大 */
+            font-size: clamp(26px, 3.8vw, 70px); 
             font-weight: normal; 
         }
 
-        /* --- 【关键修改】中文单位(天时分秒)的样式 --- */
+        /* 中文单位样式 */
         .unit {
-            font-family: 'Microsoft YaHei', sans-serif; /* 单位用常规字体 */
-            font-size: 2.2vw; /* 单位字号和左侧标题一致，比数字小 */
+            font-family: 'Microsoft YaHei', sans-serif; 
+            font-size: clamp(20px, 2.5vw, 50px);
             font-weight: normal;
-            
-            /* 这里控制间距！ */
-            margin-left: 2px;  /* 数字和单位之间空一点点 (92天) */
-            margin-right: 12px; /* 单位和下一个数字之间空多一点 (天 06) */
+            margin-left: 2px;
+            margin-right: 12px;
         }
         
-        /* 最后一个单位(秒)不需要右边距 */
-        .unit:last-child {
-            margin-right: 0;
-        }
-
-        /* --- 手机适配 --- */
-        @media (max-width: 800px) {
-            .countdown-container {
-                flex-direction: column; 
-                gap: 10px;
-            }
-            h1 { font-size: 20px; }
-            .num { font-size: 36px; }
-            .unit { font-size: 20px; margin-right: 8px; }
-        }
+        .unit:last-child { margin-right: 0; }
     </style>
 </head>
 <body>
@@ -119,4 +101,22 @@
 
             var hoursStr = hours < 10 ? "0" + hours : hours;
             var minutesStr = minutes < 10 ? "0" + minutes : minutes;
-            var secondsStr = seconds < 10 ?
+            var secondsStr = seconds < 10 ? "0" + seconds : seconds;
+
+            // 拼接 HTML
+            var timerHTML = 
+                '<span class="num">' + days + '</span><span class="unit">天</span>' +
+                '<span class="num">' + hoursStr + '</span><span class="unit">时</span>' +
+                '<span class="num">' + minutesStr + '</span><span class="unit">分</span>' +
+                '<span class="num">' + secondsStr + '</span><span class="unit">秒</span>';
+
+            document.getElementById("timer").innerHTML = timerHTML;
+
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("timer").innerHTML = "已上线";
+            }
+        }, 1000);
+    </script>
+    </body>
+</html>
