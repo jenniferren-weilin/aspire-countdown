@@ -1,71 +1,98 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ASPIRE GO-LIVE</title>
     <style>
+        /* --- 字体引入 --- */
         @font-face {
             font-family: 'CorporateFont'; 
             src: url('ROCHESANS-BOLD.TTF'); 
         }
 
+        /* --- 全局样式 --- */
         body, html {
             height: 100%;
+            width: 100%;
             margin: 0;
-            font-family: 'CorporateFont', 'Arial', sans-serif;
+            padding: 0;
             overflow: hidden;
-            background-color: transparent; /* 透明背景 */
+            background-color: transparent; 
+            /* 英文版默认用 Arial 兜底 */
+            font-family: 'CorporateFont', 'Arial', sans-serif; 
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .bg-image {
-            height: 100%;
             width: 100%;
             display: flex;
             justify-content: center; 
             align-items: center;     
-            color: white;
             text-align: center;
         }
 
         .countdown-container {
             display: flex;           
-            flex-direction: row;     /* 强制横向排列 */
-            align-items: baseline;   /* 底部对齐 */
+            flex-direction: row !important; /* 强制一行 */
+            align-items: baseline;
             justify-content: center;
-            gap: 15px;               /* 标题和数字之间的间距，稍微拉近一点 */
             
-            width: 100%;             /* 占满宽度 */
-            text-shadow: 0px 5px 15px rgba(0,0,0,0.6); 
+            /* 标题 "ASPIRE GO-LIVE IN" 和数字之间的距离 */
+            gap: 20px;               
+            
+            width: 100%;
+            white-space: nowrap;
+            color: white;
+            text-shadow: 0px 4px 10px rgba(0,0,0,0.5); 
         }
 
+        /* --- 左侧标题 --- */
         h1 {
-            /* 标题字号：调小，适应一行 */
-            font-size: 2.5vw; 
+            font-size: clamp(20px, 2.5vw, 50px); 
             margin: 0;
+            font-weight: normal; /* 企业字体本身就是粗体，这里normal即可 */
+            white-space: nowrap; 
             letter-spacing: 1px;
-            text-transform: uppercase; 
-            font-weight: normal; 
-            white-space: nowrap;     /* 死都不换行 */
+            text-transform: uppercase;
         }
 
+        /* --- 右侧数字区域 --- */
         #timer {
-            /* 数字字号：只比标题大一点点 (2.5vw vs 3.5vw) */
-            font-size: 3.5vw; 
-            line-height: 1; 
             margin: 0;
-            letter-spacing: -1px; 
-            white-space: nowrap;     /* 死都不换行 */
+            white-space: nowrap; 
+            line-height: 1;
         }
 
-        /* --- 只有在极窄的手机屏幕 (<600px) 下才变成两行 --- */
+        /* 数字样式 */
+        .num {
+            font-family: 'CorporateFont', sans-serif; 
+            font-size: clamp(26px, 3.8vw, 70px); 
+            font-weight: normal; 
+        }
+
+        /* --- 【关键修改】单位样式 (D H M S) --- */
+        .unit {
+            font-family: 'CorporateFont', sans-serif; /* 单位也保持用企业字体 */
+            font-size: clamp(20px, 2.5vw, 50px);      /* 单位稍微小一点点，或者保持一致 */
+            font-weight: normal;
+            
+            /* 1. 数字和 D 之间的空隙 */
+            margin-left: 6px;  
+            
+            /* 2. D 和下一组数字之间的空隙 */
+            margin-right: 15px; 
+        }
+        
+        .unit:last-child { margin-right: 0; }
+
+        /* 手机适配 */
         @media (max-width: 600px) {
-            .countdown-container {
-                flex-direction: column; 
-                gap: 5px;
-            }
-            h1 { font-size: 20px; }
-            #timer { font-size: 30px; }
+            .countdown-container { gap: 10px; }
+            .unit { margin-right: 8px; margin-left: 4px; }
         }
     </style>
 </head>
@@ -74,7 +101,7 @@
     <div class="bg-image">
         <div class="countdown-container">
             <h1>ASPIRE GO-LIVE IN</h1> 
-            <div id="timer">LOADING...</div>
+            <div id="timer">...</div>
         </div>
     </div>
 
@@ -85,6 +112,12 @@
             var now = new Date().getTime();
             var distance = countDownDate - now;
 
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("timer").innerHTML = "LIVE NOW";
+                return;
+            }
+
             var days = Math.floor(distance / (1000 * 60 * 60 * 24));
             var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -94,13 +127,18 @@
             var minutesStr = minutes < 10 ? "0" + minutes : minutes;
             var secondsStr = seconds < 10 ? "0" + seconds : seconds;
 
-            document.getElementById("timer").innerHTML = 
-                days + "D " + hoursStr + "H " + minutesStr + "M " + secondsStr + "S"; 
+            // 拼接 HTML: 数字 + 间距 + 单位
+            var timerHTML = 
+                '<span class="num">' + days + '</span><span class="unit">D</span>' +
+                '<span class="num">' + hoursStr + '</span><span class="unit">H</span>' +
+                '<span class="num">' + minutesStr + '</span><span class="unit">M</span>' +
+                '<span class="num">' + secondsStr + '</span><span class="unit">S</span>';
 
-            if (distance < 0) {
-                clearInterval(x);
-                document.getElementById("timer").innerHTML = "LIVE NOW";
+            var timerEl = document.getElementById("timer");
+            if (timerEl) {
+                timerEl.innerHTML = timerHTML;
             }
+
         }, 1000);
     </script>
 
