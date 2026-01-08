@@ -19,7 +19,6 @@
             padding: 0;
             overflow: hidden;
             background-color: transparent; 
-            /* 英文版默认用 Arial 兜底 */
             font-family: 'CorporateFont', 'Arial', sans-serif; 
             
             display: flex;
@@ -38,7 +37,7 @@
         .countdown-container {
             display: flex;           
             flex-direction: row !important; /* 强制一行 */
-            align-items: baseline;
+            align-items: baseline;          /* 底部对齐，保证文字底边在一条线上 */
             justify-content: center;
             
             /* 标题 "ASPIRE GO-LIVE IN" 和数字之间的距离 */
@@ -52,9 +51,11 @@
 
         /* --- 左侧标题 --- */
         h1 {
+            /* 标题字号：设定为标准大小 */
             font-size: clamp(20px, 2.5vw, 50px); 
+            
             margin: 0;
-            font-weight: normal; /* 企业字体本身就是粗体，这里normal即可 */
+            font-weight: normal; 
             white-space: nowrap; 
             letter-spacing: 1px;
             text-transform: uppercase;
@@ -67,7 +68,7 @@
             line-height: 1;
         }
 
-        /* 数字样式 */
+        /* 数字样式：比标题大 */
         .num {
             font-family: 'CorporateFont', sans-serif; 
             font-size: clamp(26px, 3.8vw, 70px); 
@@ -76,12 +77,15 @@
 
         /* --- 【关键修改】单位样式 (D H M S) --- */
         .unit {
-            font-family: 'CorporateFont', sans-serif; /* 单位也保持用企业字体 */
-            font-size: clamp(20px, 2.5vw, 50px);      /* 单位稍微小一点点，或者保持一致 */
+            font-family: 'CorporateFont', sans-serif; 
+            
+            /* 【绝对一致】强制字号与 h1 标题完全一样 */
+            font-size: clamp(20px, 2.5vw, 50px);      
+            
             font-weight: normal;
             
-            /* 1. 数字和 D 之间的空隙 */
-            margin-left: 6px;  
+            /* 1. 数字和 D 之间的空隙 (模拟空格) */
+            margin-left: 8px;  
             
             /* 2. D 和下一组数字之间的空隙 */
             margin-right: 15px; 
@@ -127,7 +131,7 @@
             var minutesStr = minutes < 10 ? "0" + minutes : minutes;
             var secondsStr = seconds < 10 ? "0" + seconds : seconds;
 
-            // 拼接 HTML: 数字 + 间距 + 单位
+            // 拼接 HTML: 确保单位是大写的 D H M S
             var timerHTML = 
                 '<span class="num">' + days + '</span><span class="unit">D</span>' +
                 '<span class="num">' + hoursStr + '</span><span class="unit">H</span>' +
